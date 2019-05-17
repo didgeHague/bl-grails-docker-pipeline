@@ -17,7 +17,7 @@ pipeline {
     }
     stages {
          stage('Checkout') {
-            steps
+            steps {
                checkout scm
                sh "git rev-parse HEAD > .git/commit-id"
                commit_id = readFile('.git/commit-id').trim().take(7)
