@@ -30,7 +30,7 @@ pipeline {
           agent{
             docker {
               image 'proactivehk/grails:3.2.7'
-              args '-v ${env.DOCKER_VOL}:/app'
+              args "-v ${env.DOCKER_VOL}:/app"
            }
           }
             steps {
