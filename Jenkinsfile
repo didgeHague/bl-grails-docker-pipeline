@@ -1,8 +1,6 @@
 def app;
 // def pwd = pwd()
-String commit_id;
-
-String env = "staging";
+String commit_id
 String tagName;
 String imageName = "grails-jenkins-pipeline";
 String serviceName = "gjp2_app"
@@ -19,13 +17,20 @@ pipeline {
                 // tagName = "${commit_id}-${env}"
             }
         }
+        
+        stage('Set Environment Variables') {
+           steps {
+             script{
+                 env.DOCKER_VOL = pwd()
+             }
+           }
+       }
 
         stage('Test app') {
-          def pwd = pwd()
           agent{
             docker {
               image 'proactivehk/grails:3.2.7'
-              args '-v $pwd:/app'
+              args '-v ${env.DOCKER_VOL}:/app'
            }
           }
             steps {
