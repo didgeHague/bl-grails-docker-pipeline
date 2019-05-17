@@ -21,10 +21,11 @@ pipeline {
         }
 
         stage('Test app') {
+          def pwd = pwd()
           agent{
             docker {
               image 'proactivehk/grails:3.2.7'
-              args '-v $pwd():/app'
+              args '-v $pwd:/app'
            }
           }
             steps {
