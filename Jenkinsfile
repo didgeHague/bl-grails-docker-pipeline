@@ -20,9 +20,10 @@ pipeline {
             steps {
                 checkout scm
                 sh "git rev-parse HEAD > .git/commit-id"
-               script {
-                     commit_id = readFile('.git/commit-id').trim().take(7)
-                     tagName = "${commit_id}-${env}"
+                script {
+                    commit_id = readFile('.git/commit-id').trim().take(7)
+                    tagName = "${commit_id}-${env}"
+                }
                }
             }
         }
