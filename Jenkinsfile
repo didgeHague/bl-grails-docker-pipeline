@@ -17,13 +17,13 @@ node {
 
     stage('Test app') {
 
-        docker.image('proactivehk/grails-docker:3.2.7').inside("-v $pwd:/app") { c ->
+        docker.image('proactivehk/grails:3.2.7').inside("-v $pwd:/app") { c ->
             sh 'grails test-app'
         }
     }
 
     stage('Build app') {
-        docker.image('proactivehk/grails-docker:3.2.7').inside("-v $pwd:/app") { c ->
+        docker.image('proactivehk/grails:3.2.7').inside("-v $pwd:/app") { c ->
             sh 'grails war'
         }
     }
