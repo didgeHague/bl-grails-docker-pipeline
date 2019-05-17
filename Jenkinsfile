@@ -15,16 +15,11 @@ pipeline {
             steps {
                 checkout scm
                 sh "git rev-parse HEAD > .git/commit-id"
+                commit_id = readFile('.git/commit-id').trim().take(7)
+                tagName = "${commit_id}-${env}"
             }
         }
-
-        stage('Get Commit Id'){
-          node{
-            commit_id = readFile('.git/commit-id').trim().take(7)
-              tagName = "${commit_id}-${env}"
-          }
-        }
-
+        
         stage('Test app') {
           agent{
             docker {
