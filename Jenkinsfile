@@ -1,5 +1,5 @@
 def app;
-def pwd = pwd()
+// def pwd = pwd()
 String commit_id;
 
 String env = "staging";
@@ -22,7 +22,7 @@ pipeline {
           agent{
             docker {
               image $grailsDocker
-              args '-v $pwd:/app'
+              args '-v $pwd():/app'
            }
           }
             steps {
