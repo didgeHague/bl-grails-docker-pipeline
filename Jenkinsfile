@@ -1,4 +1,4 @@
-node {
+pipeline {
     def app;
     def pwd = pwd()
     String commit_id;
@@ -7,35 +7,32 @@ node {
     String tagName;
     String imageName = "grails-jenkins-pipeline";
     String serviceName = "gjp2_app"
+    String grailsDocker = proactivehk/grails:3.2.7
 
-    stage('Checkout') {
-        checkout scm
-        sh "git rev-parse HEAD > .git/commit-id"
-        commit_id = readFile('.git/commit-id').trim().take(7)
-        tagName = "${commit_id}-${env}"
-    }
-
-    stage('Test app') {
-
-        docker.image('proactivehk/grails:3.2.7').inside("-v $pwd:/app") { c ->
-            sh 'grails test-app'
+    agent {
+        docker {
+            image 'node:7-alpine'
+            args '-v $pwd:/app'
         }
     }
-
-    stage('Build app') {
-        docker.image('proactivehk/grails:3.2.7').inside("-v $pwd:/app") { c ->
-            sh 'grails war'
+    stages {
+         stage('Checkout') {
+            checkout scm
+            sh "git rev-parse HEAD > .git/commit-id"
+            commit_id = readFile('.git/commit-id').trim().take(7)
+            tagName = "${commit_id}-${env}"
         }
-    }
 
-    stage('Build image') {
-        sh "docker build --build-arg COMMIT_ID=${commit_id} -t qsc/${imageName}:${tagName} ."
-        app = docker.image("qsc/${imageName}:${tagName}");
-    }
+        stage('Test app') {
+            steps {
+                sh 'grails test-app'
+            }
+        }
 
-    stage('Deploy') {
-        sh "docker service update --image qsc/${imageName}:${tagName} ${serviceName}"
-
-        emailext attachLog: true, compressLog: true, to: 'richhague@gmail.com'
+        stage('Build app') {
+            steps {
+                sh 'grails war'
+            }
+        }
     }
 }
