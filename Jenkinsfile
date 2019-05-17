@@ -1,14 +1,14 @@
+def app;
+def pwd = pwd()
+String commit_id;
+
+String env = "staging";
+String tagName;
+String imageName = "grails-jenkins-pipeline";
+String serviceName = "gjp2_app"
+String grailsDocker = "proactivehk/grails:3.2.7"
+
 pipeline {
-    def app;
-    def pwd = pwd()
-    String commit_id;
-
-    String env = "staging";
-    String tagName;
-    String imageName = "grails-jenkins-pipeline";
-    String serviceName = "gjp2_app"
-    String grailsDocker = "proactivehk/grails:3.2.7"
-
     agent {
         docker {
             image $grailsDocker
