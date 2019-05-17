@@ -7,11 +7,11 @@ pipeline {
     String tagName;
     String imageName = "grails-jenkins-pipeline";
     String serviceName = "gjp2_app"
-    String grailsDocker = proactivehk/grails:3.2.7
+    String grailsDocker = "proactivehk/grails:3.2.7"
 
     agent {
         docker {
-            image 'node:7-alpine'
+            image $grailsDocker
             args '-v $pwd:/app'
         }
     }
