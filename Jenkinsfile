@@ -15,7 +15,6 @@ pipeline {
             steps {
                 checkout scm
                 sh "git rev-parse HEAD > .git/commit-id"
-
             }
         }
 
